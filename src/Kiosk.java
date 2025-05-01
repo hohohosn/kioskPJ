@@ -1,40 +1,48 @@
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Kiosk {
-    private List<MenuItem> menuItems;
+    private List<Menu> menus;
+    private Scanner scanner;
 
-    // 생성자
-    public Kiosk(List<MenuItem> menuItems) {
-        this.menuItems = menuItems;
+    public Kiosk(List<Menu> menus) {
+        this.menus = menus;
+        this.scanner = new Scanner(System.in);
     }
 
-    // 기능
     public void start() {
-        Scanner scanner = new Scanner(System.in);
         while (true) {
-            System.out.println("[ SHAKESHACK MENU ]");
-            for (int i = 0; i < menuItems.size(); i++) {
-                MenuItem item = menuItems.get(i);
-                System.out.printf("%d. %s   | W %.1f | %s%n",
-                        i + 1, item.getName(), item.getPrice(), item.getDescription());
+            System.out.println("[ MAIN MENU ]");
+            for (int i = 0; i < menus.size(); i++) {
+                System.out.printf("%d. %s\n", i + 1, menus.get(i).getName());
             }
-            System.out.println("0. 종료    | 종료");
+            System.out.println("0. 종료 | 종료");
 
-            System.out.print("번호를 선택하세요: ");
-            int input = scanner.nextInt();
-
-            if (input == 0) {
+            int choice = scanner.nextInt();
+            if (choice == 0) {
                 System.out.println("프로그램을 종료합니다.");
                 break;
-            } else if (input >= 1 && input <= menuItems.size()) {
-                MenuItem selected = menuItems.get(input - 1);
-                System.out.printf("선택한 메뉴: %s | W %.1f | %s%n",
-                        selected.getName(), selected.getPrice(), selected.getDescription());
-            } else {
-                System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
             }
+
+            if (choice < 1 || choice > menus.size()) {
+                System.out.println("잘못된 입력입니다.");
+                continue;
+            }
+
+            Menu selectedMenu = menus.get(choice - 1);
+            System.out.printf("[ %s MENU ]\n", selectedMenu.getName());
+            selectedMenu.printMenuItems();
+
+            int itemChoice = scanner.nextInt();
+            if (itemChoice == 0) continue;
+
+            if (itemChoice < 1 || itemChoice > selectedMenu.getItems().size()) {
+                System.out.println("잘못된 입력입니다.");
+                continue;
+            }
+
+            MenuItem selectedItem = selectedMenu.getItems().get(itemChoice - 1);
+            System.out.printf("선택한 메뉴: %s | W %.1f | %s\n\n",
+                    selectedItem.getName(), selectedItem.getPrice(), selectedItem.getDescription());
         }
-        scanner.close();
     }
 }
