@@ -17,6 +17,10 @@ public class Menu {
         return items;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public void addItem(MenuItem item) {
         items.add(item);
     }
