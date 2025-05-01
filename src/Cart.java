@@ -1,50 +1,43 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Cart {
-    private List<CartItem> items = new ArrayList<>();
+    private List<CartItem> items;
+
+    public Cart() {
+        this.items = new ArrayList<>();
+    }
 
     public void addItem(MenuItem menuItem) {
-        for (CartItem item : items) {
-            if (item.getMenuItem().equals(menuItem)) {
-                item.increaseQuantity();
+        for (CartItem cartItem : items) {
+            if (cartItem.getItem().getName().equals(menuItem.getName())) {
+                cartItem.increaseQuantity(1);
                 return;
             }
         }
-        items.add(new CartItem(menuItem));
+        items.add(new CartItem(menuItem, 1));
     }
 
-    public void showCart() {
-        if (items.isEmpty()) {
-            System.out.println("장바구니가 비어 있습니다.");
-            return;
-        }
-
+    public void printCart() {
         System.out.println("[ Orders ]");
         for (CartItem item : items) {
-            System.out.printf("%s | W %.1f | 수량: %d\n",
-                    item.getMenuItem().getName(),
-                    item.getMenuItem().getPrice(),
-                    item.getQuantity());
+            item.print();
         }
-
-        System.out.println("\n[ Total ]");
-        System.out.printf("W %d\n", calculateTotalPrice());
+        System.out.printf("\n[ Total ]\nW %.1f\n", getTotalPrice());
     }
 
-    public int calculateTotalPrice() {
-        int sum = 0;
+    public double getTotalPrice() {
+        double total = 0;
         for (CartItem item : items) {
-            sum += item.getTotalPrice();
+            total += item.getTotalPrice();
         }
-        return sum;
-    }
-
-    public void clearCart() {
-        items.clear();
+        return total;
     }
 
     public boolean isEmpty() {
         return items.isEmpty();
+    }
+
+    public void clear() {
+        items.clear();
     }
 }

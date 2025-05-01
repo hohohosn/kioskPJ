@@ -1,26 +1,30 @@
 public class CartItem {
-    private MenuItem menuItem;
+    private MenuItem item;
     private int quantity;
 
-    public CartItem(MenuItem menuItem) {
-        this.menuItem = menuItem;
-        this.quantity = 1;
+    public CartItem(MenuItem item, int quantity) {
+        this.item = item;
+        this.quantity = quantity;
     }
 
-    public MenuItem getMenuItem() {
-        return menuItem;
+    public MenuItem getItem() {
+        return item;
     }
 
     public int getQuantity() {
         return quantity;
     }
 
-    public void increaseQuantity() {
-        quantity++;
+    public void increaseQuantity(int amount) {
+        this.quantity += amount;
     }
 
-    public int getTotalPrice() {
-        return (int)(menuItem.getPrice() * quantity);
+    public double getTotalPrice() {
+        return item.getPrice() * quantity;
+    }
+
+    public void print() {
+        System.out.printf("%s | W %.1f | 수량: %d | 합계: W %.1f\n",
+                item.getName(), item.getPrice(), quantity, getTotalPrice());
     }
 }
-
